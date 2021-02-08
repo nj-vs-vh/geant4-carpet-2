@@ -41,12 +41,13 @@
 #include "G4RegionStore.hh"
 #include "G4ProductionCuts.hh"
 
-class C2Physics: public G4VUserPhysicsList
+class C2Physics : public G4VUserPhysicsList
 {
-    public:
+public:
     C2Physics();
     ~C2Physics();
-    protected:
+
+protected:
     void ConstructParticle();
     void ConstructProcess();
     void SetCuts();

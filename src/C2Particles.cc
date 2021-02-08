@@ -37,22 +37,24 @@
 #include "G4He3.hh"
 #include "G4GenericIon.hh"
 
-C2Particles::C2Particles(const G4String& name):G4VPhysicsConstructor(name)
-{}
+C2Particles::C2Particles(const G4String &name) : G4VPhysicsConstructor(name)
+{
+}
 
 C2Particles::~C2Particles()
-{}
+{
+}
 
 void C2Particles::ConstructParticle()
 {
-// pseudo-particles
+  // pseudo-particles
   G4Geantino::GeantinoDefinition();
   G4ChargedGeantino::ChargedGeantinoDefinition();
-// gamma
+  // gamma
   G4Gamma::GammaDefinition();
-// optical photon
+  // optical photon
   G4OpticalPhoton::OpticalPhotonDefinition();
-// leptons
+  // leptons
   G4Electron::ElectronDefinition();
   G4Positron::PositronDefinition();
   G4MuonPlus::MuonPlusDefinition();
@@ -60,8 +62,8 @@ void C2Particles::ConstructParticle()
   G4NeutrinoE::NeutrinoEDefinition();
   G4AntiNeutrinoE::AntiNeutrinoEDefinition();
   G4NeutrinoMu::NeutrinoMuDefinition();
-  G4AntiNeutrinoMu::AntiNeutrinoMuDefinition();  
-// mesons
+  G4AntiNeutrinoMu::AntiNeutrinoMuDefinition();
+  // mesons
   G4PionPlus::PionPlusDefinition();
   G4PionMinus::PionMinusDefinition();
   G4PionZero::PionZeroDefinition();
@@ -73,12 +75,12 @@ void C2Particles::ConstructParticle()
   G4AntiKaonZero::AntiKaonZeroDefinition();
   G4KaonZeroLong::KaonZeroLongDefinition();
   G4KaonZeroShort::KaonZeroShortDefinition();
-// barions
+  // barions
   G4Proton::ProtonDefinition();
   G4AntiProton::AntiProtonDefinition();
   G4Neutron::NeutronDefinition();
   G4AntiNeutron::AntiNeutronDefinition();
-// ions
+  // ions
   G4Deuteron::DeuteronDefinition();
   G4Triton::TritonDefinition();
   G4He3::He3Definition();
