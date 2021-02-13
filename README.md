@@ -24,7 +24,9 @@
 . configure.sh
 ```
 
-# TODO:
+3. Run CMake to create buildscripts
 
-* интегрировать `corsika2geant` в приложение и организовать чтение напрямую из DAT файла CORSIKA
-* ...
+```bash
+mkdir -p build
+cmake -DCMAKE_PREFIX_PATH=$G4INSTALL -S . -B build/
+```
