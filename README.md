@@ -1,5 +1,11 @@
 ## Installation
 
+0. Clone this repo
+
+```bash
+git clone https://github.com/nj-vs-vh/geant4-carpet-2.git
+```
+
 1. Install COAST
    1. [Download](https://web.ikp.kit.edu/rulrich/coast-files/coast-v4r5.tar.gz) and unpack tar archive
   
@@ -10,7 +16,7 @@
    export COAST_DIR=/my/coast/build
    ```
 
-   3. Run following commands from COAST dir
+   1. Run following commands from COAST dir
    ```bash
    ./configure
    make
