@@ -20,7 +20,7 @@
 
 #define PRINT_SHOWER_METADATA true
 #define PRINT_PARTICLE_DATA false
-#define PRINT_PARTICLE_FILTERING true
+#define PRINT_PARTICLE_FILTERING false
 
 void C2Primary::GeneratePrimaries(G4Event *anEvent)
 {

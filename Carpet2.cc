@@ -9,7 +9,7 @@
 #include <iostream>
 #include <string>
 
-int NParticleF;
+int nParticleFiltered;
 double xa, ya;
 C2Primary *MyPrimary;
 C2Step *MyStep;
@@ -47,8 +47,8 @@ int main(int argc, char **argv)
     ya = 0.0;
 
     MyPrimary->ReadShower();
-    NParticleF = MyPrimary->FilterParticles(xa, ya);
-    printf("NParticleF= %8d\n", NParticleF);
+    nParticleFiltered = MyPrimary->FilterParticles(xa, ya);
+    printf("nParticleFiltered= %8d\n", nParticleFiltered);
     //
     G4UImanager *UImanager = G4UImanager::GetUIpointer();
     UImanager->ApplyCommand("/run/verbose 0");
@@ -56,7 +56,7 @@ int main(int argc, char **argv)
     UImanager->ApplyCommand("/tracking/verbose 0");
     //
     MyStep->fp = fopen("Output", "w");
-    RunMng->BeamOn(NParticleF);
+    RunMng->BeamOn(nParticleFiltered);
     fclose(MyStep->fp);
     delete RunMng;
     return (0);
