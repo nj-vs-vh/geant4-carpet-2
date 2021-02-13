@@ -24,9 +24,15 @@
 . configure.sh
 ```
 
-3. Run CMake to create buildscripts
+3. Run CMake and build with
 
 ```bash
-mkdir -p build
-cmake -DCMAKE_PREFIX_PATH=$G4INSTALL -S . -B build/
+. rebuild.sh
+```
+
+4. Run application from build directory
+
+```bash
+cd build
+./Carpet2 /path/to/corsika/file
 ```
