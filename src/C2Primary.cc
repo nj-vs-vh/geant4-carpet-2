@@ -121,7 +121,8 @@ int C2Primary::ReadShower()
 
             if (PRINT_SHOWER_METADATA)
             {
-                std::cout << "Shower summary: total particles = " << nParticle << std::endl << std::endl;
+                std::cout << "Shower summary: total particles = " << nParticle << std::endl
+                          << std::endl;
             }
         }
     }
