@@ -45,6 +45,7 @@ int main(int argc, char **argv)
     //xa= 2.0e3;
     xa = 5.0e3;
     ya = 0.0;
+
     MyPrimary->ReadShower();
     NParticleF = MyPrimary->FilterParticles(xa, ya);
     printf("NParticleF= %8d\n", NParticleF);

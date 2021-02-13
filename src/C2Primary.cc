@@ -18,9 +18,9 @@
 #include <crs/MLongitudinalBlock.h>
 #include <crs/MParticle.h>
 
-#define PRINT_SHOWER_METADATA false
+#define PRINT_SHOWER_METADATA true
 #define PRINT_PARTICLE_DATA false
-#define PRINT_PARTICLE_FILTERING false
+#define PRINT_PARTICLE_FILTERING true
 
 void C2Primary::GeneratePrimaries(G4Event *anEvent)
 {
@@ -76,7 +76,7 @@ int C2Primary::ReadShower()
                           << "; theta0 = " << Shower.GetTheta() << "; phi0 = " << Shower.GetPhi() << std::endl;
             };
 
-            int particleIndex = 0;
+            int iPart = 0;
 
             crs::TSubBlock DataBlock;
             while (corsikaFileReader.GetData(DataBlock))
@@ -86,29 +86,29 @@ int C2Primary::ReadShower()
                     // converting generic TSubBlock to specific MParticleBlock
                     const crs::MParticleBlock &ParticleDataBlock = DataBlock;
 
-                    crs::MParticleBlock::ParticleListConstIterator iEntry;
-                    for (iEntry = ParticleDataBlock.FirstParticle(); iEntry != ParticleDataBlock.LastParticle(); ++iEntry)
+                    crs::MParticleBlock::ParticleListConstIterator entry;
+                    for (entry = ParticleDataBlock.FirstParticle(); entry != ParticleDataBlock.LastParticle(); ++entry)
                     {
-                        if (iEntry->IsParticle())
+                        if (entry->IsParticle())
                         {
-                            crs::MParticle iPart(*iEntry);
+                            crs::MParticle particle(*entry);
 
-                            ID[particleIndex] = iPart.GetParticleID();
-                            x[particleIndex] = iPart.GetX();
-                            y[particleIndex] = iPart.GetY();
-                            px[particleIndex] = iPart.GetPx();
-                            py[particleIndex] = iPart.GetPy();
-                            pz[particleIndex] = iPart.GetPz();
-                            E[particleIndex] = iPart.GetKinEnergy();
-                            t[particleIndex] = iPart.GetTime();
+                            ID[iPart] = particle.GetParticleID();
+                            x[iPart] = particle.GetX();
+                            y[iPart] = particle.GetY();
+                            px[iPart] = particle.GetPx();
+                            py[iPart] = particle.GetPy();
+                            pz[iPart] = particle.GetPz();
+                            E[iPart] = particle.GetKinEnergy();
+                            t[iPart] = particle.GetTime();
                             if (PRINT_PARTICLE_DATA)
                             {
-                                std::cout << " id: " << ID[particleIndex] << " x=" << x[particleIndex] << " y=" << y[particleIndex]
-                                          << " px=" << px[particleIndex] << " py=" << py[particleIndex] << " pz=" << pz[particleIndex]
-                                          << " E=" << E[particleIndex] << " t=" << t[particleIndex] << std::endl;
+                                std::cout << " id: " << ID[iPart] << " x=" << x[iPart] << " y=" << y[iPart]
+                                          << " px=" << px[iPart] << " py=" << py[iPart] << " pz=" << pz[iPart]
+                                          << " E=" << E[iPart] << " t=" << t[iPart] << std::endl;
                             }
 
-                            particleIndex++;
+                            iPart++;
                         }
                     }
                 }
@@ -117,11 +117,11 @@ int C2Primary::ReadShower()
             crs::MEventEnd ShowerSummary;
             corsikaFileReader.GetShowerSummary(ShowerSummary);
 
+            nParticle = ShowerSummary.GetParticles();
+
             if (PRINT_SHOWER_METADATA)
             {
-                std::cout << "Shower summary: total particles = " << ShowerSummary.GetParticles() << std::endl
-                          << "\n======\n"
-                          << std::endl;
+                std::cout << "Shower summary: total particles = " << nParticle << std::endl << std::endl;
             }
         }
     }
@@ -129,15 +129,15 @@ int C2Primary::ReadShower()
 
 int C2Primary::FilterParticles(double xa, double ya)
 {
-    int i, nf;
+    int i, nParticleFiltered;
     double xs, ys;
     double dx, dy, dr;
     //
-    nf = 0.0;
+    nParticleFiltered = 0.0;
     dr = 5.0e2; //delta-distance [cm]= 5 m
     dx = 2.75e2 + dr;
     dy = 2.10e3 + dr;
-    for (i = 0; i < NParticle; i++)
+    for (i = 0; i < nParticle; i++)
     { //filter particle
         xs = x[i] + xa;
         ys = y[i] + ya;
@@ -145,15 +145,15 @@ int C2Primary::FilterParticles(double xa, double ya)
             printf("%13.6e %13.6e\n", xs, ys);
         if ((xs >= -dx) && (xs <= dx) && (ys >= -dy) && (ys <= dy)) //inject this particle
         {                                                           //energy threshold 500 MeV, in reality close to 1 GeV
-            IDf[nf] = ID[i];
-            xf[nf] = xs;
-            yf[nf] = ys;
-            pxf[nf] = px[i];
-            pyf[nf] = py[i];
-            pzf[nf] = pz[i];
-            Ef[nf] = E[i];
-            tf[nf] = t[i];
-            nf++;
+            IDf[nParticleFiltered] = ID[i];
+            xf[nParticleFiltered] = xs;
+            yf[nParticleFiltered] = ys;
+            pxf[nParticleFiltered] = px[i];
+            pyf[nParticleFiltered] = py[i];
+            pzf[nParticleFiltered] = pz[i];
+            Ef[nParticleFiltered] = E[i];
+            tf[nParticleFiltered] = t[i];
+            nParticleFiltered++;
             if (PRINT_PARTICLE_FILTERING)
             {
                 printf("%3d %13.6e %13.6e  %13.6e %13.6e %13.6e  %13.6e %13.6e\n",
@@ -162,6 +162,6 @@ int C2Primary::FilterParticles(double xa, double ya)
         }
     }
     if (PRINT_PARTICLE_FILTERING)
-        printf("nf= %8d\n", nf);
-    return (nf);
+        printf("nParticleFiltered= %8d\n", nParticleFiltered);
+    return (nParticleFiltered);
 }
