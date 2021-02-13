@@ -1,5 +1,9 @@
+#include <string>
+
 #include "G4ParticleTable.hh"
 #include "G4VUserPrimaryGeneratorAction.hh"
+
+#include <crsRead/MCorsikaReader.h>
 
 #define NMAX 10000000
 
@@ -8,13 +12,21 @@ class G4ParticleGun;
 class C2Primary : public G4VUserPrimaryGeneratorAction
 {
 public:
-    C2Primary();
-    ~C2Primary();
+    C2Primary(std::string corsika_file_name) :
+        corsikaFileReader(corsika_file_name, 0)
+    {
+        particleGun = new G4ParticleGun(1);
+        particleTable = G4ParticleTable::GetParticleTable();
+    }
+    ~C2Primary()
+    {
+        delete particleGun;
+    }
+
     void GeneratePrimaries(G4Event *anEvent);
     int ReadShower();
     int FilterParticles(double xa, double ya);
     G4ParticleTable *particleTable;
-    FILE *fpinp;
 
 private:
     int NParticle; //total number of particles in the shower (observation level)
@@ -28,6 +40,7 @@ private:
     double pxf[NMAX], pyf[NMAX], pzf[NMAX];
     double Ef[NMAX], tf[NMAX];
     //
+    crsRead::MCorsikaReader corsikaFileReader;
     G4ParticleGun *particleGun;
     int ReadParticle(int n);
 };

@@ -18,17 +18,10 @@
    make install
    ```
 
-3. Modify `configure.sh` for your system, place correct `COAST_DIR` and `G4INSTALL` in there. Then run it with
+2. Modify `configure.sh` for your system, place correct `COAST_DIR` and `G4INSTALL` in there. Then run it with
 
 ```bash
 . configure.sh
-```
-
-4. Build coast2geant tool
-
-```bash
-cd corsika2geant
-make lib
 ```
 
 # TODO:

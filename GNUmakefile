@@ -4,11 +4,9 @@ G4EXLIB := true
 
 G4SYSTEM = Linux-g++
 
-CWD = $(shell pwd)
-
-EXTRALIBS := -L$(CWD)/corsika2geant/
-
-CPPFLAGS += -I$(CWD)/corsika2geant/
+# linking with COAST
+CPPFLAGS += -I${COAST_DIR}/include/
+EXTRALIBS := -L ${COAST_DIR}/lib/ -lCorsikaFileIO -lCorsikaIntern
 
 .PHONY: all
 all: lib bin

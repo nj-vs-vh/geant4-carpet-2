@@ -6,30 +6,38 @@
 #include "C2Event.hh"
 #include "C2Step.hh"
 
+#include <iostream>
+#include <string>
+
 int NParticleF;
 double xa, ya;
 C2Primary *MyPrimary;
 C2Step *MyStep;
 
-int main()
+int main(int argc, char **argv)
 {
+    std::string corsika_file_path;
+    if (argc == 2)
+    {
+        corsika_file_path = argv[1];
+    }
+    else
+    {
+        std::cout << "unexpected command-line arguments, expected CORSIKA file name" << std::endl;
+        return 1;
+    }
+
     G4RunManager *RunMng = new G4RunManager;
     RunMng->SetUserInitialization(new C2Detector);
     RunMng->SetUserInitialization(new C2Physics);
     RunMng->Initialize();
     //
-    MyPrimary = new C2Primary;
+    MyPrimary = new C2Primary(corsika_file_path);
     RunMng->SetUserAction(MyPrimary);
     RunMng->SetUserAction(new C2Event);
     MyStep = new C2Step;
     RunMng->SetUserAction(MyStep);
-    //
-    MyPrimary->fpinp = fopen("Shower", "r");
-    if (MyPrimary->fpinp == NULL)
-    {
-        printf("Input file Shower not found!\n");
-        return (1);
-    }
+
     //axis coordinates [cm]
     //xa= 0.0;
     //xa= 5.0e2;
@@ -49,7 +57,6 @@ int main()
     MyStep->fp = fopen("Output", "w");
     RunMng->BeamOn(NParticleF);
     fclose(MyStep->fp);
-    fclose(MyPrimary->fpinp);
     delete RunMng;
     return (0);
 }
