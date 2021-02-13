@@ -18,9 +18,11 @@
    make install
    ```
 
-2. Modify `configure.sh` for your system, place correct `COAST_DIR` and `G4INSTALL` in there. Then run it with
+2. Create `configure.sh` from example, make sure to place correct `COAST_DIR` and `G4INSTALL` in there. Then run it
 
 ```bash
+cp configure.sh.example configure.sh
+# modify configure.sh here, it will not show in git
 . configure.sh
 ```
 
